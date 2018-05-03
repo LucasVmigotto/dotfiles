@@ -1,0 +1,39 @@
+#!/bin/bash
+
+DIR_CONFIG=$HOME/dotfiles
+
+echo -e "\n################### Setting the setup ###################"
+
+if [[ -f "$HOME/.profile" ]];then
+    FILE_PROFILE=$HOME/.profile
+elif [[ -f "$HOME/.bash_profile" ]];then
+    FILE_PROFILE=$HOME/.bash_profile
+fi
+
+echo "Profile setted: $FILE_PROFILE"
+
+if [[ -f "$FILE_PROFILE" ]];then
+    echo ". $DIR_CONFIG/profile" >> $FILE_PROFILE
+    echo "Copying profile..."
+    echo "Done!"
+else
+    echo "Profile not found."
+fi
+
+echo -e "\n############ Making some amazing t#erminal ############"
+
+if [[ -f "$HOME/.bashrc" ]];then
+    FILE_BASHRC=$HOME/.bashrc
+fi
+
+echo "Bashrc file: $FILE_BASHRC"
+
+if [[ -f "$FILE_BASHRC" ]];then
+    echo ". $DIR_CONFIG/bashrc" >> $FILE_BASHRC
+    echo "Copyong bashrc..."
+    echo "Done!"
+else
+    echo "Bashrc not found!"
+fi
+
+echo -e "\nEverything done!"
