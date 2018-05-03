@@ -36,9 +36,9 @@ whiteBold="\[\033[1;37m\]"
 whiteUnderl="\[\033[4;37m\]"
 
 if [[ "$color_prompt" = yes ]];then
-    export PS1="$whiteBold[\$(date +'%d/%m/%Y | %H:%M:%S')] ${debian_chroot:+($debian_chroot)}$cyanBold\u$yellowLight:\W$greenBold\$(parse_git_branch)$white \$ "
+    export PS1="$whiteBold[\$(date +'%Y/%m/%d | %H:%M:%S')] ${debian_chroot:+($debian_chroot)}$cyanBold\u$yellowLight:\W$greenBold\$(parse_git_branch)$white \$ "
 else
-    export PS1="$whiteBold[\$(data +'%d/%m/%Y | %H:%M:%S')] ${debian_chroot:+($debian_chroot)}\u@\h:\w\$ "
+    export PS1="$whiteBold[\$(data +'%Y/%m/%d | %H:%M:%S')] ${debian_chroot:+($debian_chroot)}\u@\h:\w\$ "
 fi
 
 alias open='xdg-open'
