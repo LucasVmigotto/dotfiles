@@ -48,7 +48,7 @@ whiteBold="\[\033[1;37m\]"
 whiteUnderl="\[\033[4;37m\]"
 
 if [[ "$color_prompt" = yes ]];then
-    export PS1="$white\$(date +'%Y/%m/%d | %H:%M:%S')\n${debian_chroot:+($debian_chroot)}$cyanBold\u$whiteBold@$redBold\h$yellowLight:\W$greenBold\$(parse_git_branch)$whiteBold \$ "
+    export PS1="$whiteBold\$(date +'%Y-%m-%d | %H:%M:%S')\n${debian_chroot:+($debian_chroot)}$cyanBold\u$whiteBold@$redBold\h$yellowLight:\W$greenBold\$(parse_git_branch)$whiteBold \$$white "
 else
     export PS1="$whiteBold[\$(data +'%Y/%m/%d | %H:%M:%S')] ${debian_chroot:+($debian_chroot)}\u@\h:\w\$ "
 fi
