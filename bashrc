@@ -7,7 +7,19 @@ case "$TERM" in
 esac
 
 parse_git_branch() {
-    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\.)/'
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+
+git_status_change() {
+    git diff --shortstat | grep 'changed' | awk '{print $1}'
+}
+
+git_status_insert() {
+    git diff --shortstat | grep 'insertion' | awk '{print $1}'
+}
+
+git_status_delete() {
+    git diff --shortstat | grep 'deletion' | awk '{print $1}'
 }
 
 black="\[\033[0;30m\]"
@@ -36,7 +48,7 @@ whiteBold="\[\033[1;37m\]"
 whiteUnderl="\[\033[4;37m\]"
 
 if [[ "$color_prompt" = yes ]];then
-    export PS1="$whiteBold[\$(date +'%Y/%m/%d | %H:%M:%S')] ${debian_chroot:+($debian_chroot)}$cyanBold\u$yellowLight:\W$greenBold\$(parse_git_branch)$white \$ "
+    export PS1="$white\$(date +'%Y/%m/%d | %H:%M:%S')\n${debian_chroot:+($debian_chroot)}$cyanBold\u$whiteBold@$redBold\h$yellowLight:\W$greenBold\$(parse_git_branch)$whiteBold \$ "
 else
     export PS1="$whiteBold[\$(data +'%Y/%m/%d | %H:%M:%S')] ${debian_chroot:+($debian_chroot)}\u@\h:\w\$ "
 fi

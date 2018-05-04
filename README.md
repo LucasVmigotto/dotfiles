@@ -8,11 +8,13 @@ O log se divide em quatro partes:
 
 1. Data e hora atual
 2. Nome de usuário logado
-3. Diretório atual de trabalho
-4. Nome da branch caso haja uma pasta `.git/`
+3. Nome do computador
+4. Diretório atual de trabalho
+5. Nome da branch caso haja uma pasta `.git/`
 
 ```bash
-[dd/mm/yyyy | hh:MM:ss] nomeDoUsuário:diretórioAtual (nome da branch) $
+dd/mm/yyyy | hh:MM:ss
+nomeDoUsuário@hostname:diretórioAtual (nome da branch) $
 ```
 
 ## Instalação
