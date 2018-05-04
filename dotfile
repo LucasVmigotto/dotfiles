@@ -29,8 +29,12 @@ fi
 echo "Bashrc file: $FILE_BASHRC"
 
 if [[ -f "$FILE_BASHRC" ]];then
-    echo ". $DIR_CONFIG/bashrc" >> $FILE_BASHRC
     echo "Copyong bashrc..."
+    if [[ $(grep -i ". $DIR_CONFIG/bashrc" $FILE_BASHRC) == "" ]];then
+        echo ". $DIR_CONFIG/bashrc" >> $FILE_BASHRC
+    else
+        echo "No need of this file, you already got"
+    fi
     echo "Done!"
 else
     echo "Bashrc not found!"
