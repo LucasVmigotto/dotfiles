@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 case "$TERM" in
     xterm) color_prompt=yes;;
     xterm-color) color_prompt=yes;;

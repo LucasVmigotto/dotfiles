@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DIR_CONFIG=$HOME/dotfiles
 
@@ -20,7 +20,7 @@ else
     echo "Profile not found."
 fi
 
-echo -e "\n############ Making some amazing t#erminal ############"
+echo -e "\n############ Making some amazing terminal ############"
 
 if [[ -f "$HOME/.bashrc" ]];then
     FILE_BASHRC=$HOME/.bashrc
@@ -29,7 +29,7 @@ fi
 echo "Bashrc file: $FILE_BASHRC"
 
 if [[ -f "$FILE_BASHRC" ]];then
-    echo "Copyong bashrc..."
+    echo "Copying bashrc..."
     if [[ $(grep -i ". $DIR_CONFIG/bashrc" $FILE_BASHRC) == "" ]];then
         echo ". $DIR_CONFIG/bashrc" >> $FILE_BASHRC
     else
