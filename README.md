@@ -13,8 +13,8 @@ O log se divide em quatro partes:
 5. Nome da branch caso haja uma pasta `.git/`
 
 ```bash
-dd/mm/yyyy | hh:MM:ss
-nomeDoUsuário@hostname:diretórioAtual (nome da branch) $
+| dd/mm/yyyy | hh:MM:ss | in diretórioDeTrabalho
+nomeDoUsuário@hostname: (nome da branch) $
 ```
 
 ## Instalação
