@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 case "$TERM" in
     xterm) color_prompt=yes;;
     xterm-color) color_prompt=yes;;
@@ -8,7 +9,7 @@ case "$TERM" in
 esac
 
 parse_git_branch() {
-    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 
 git_status() {
@@ -46,9 +47,9 @@ whiteBold="\[\033[1;37m\]"
 whiteUnderl="\[\033[4;37m\]"
 
 if [[ "$color_prompt" = yes ]];then
-    export PS1="$whiteBold\$(date +'|%F | %T|')$purpleBold in $yellowLight\w\n${debian_chroot:+($debian_chroot)}$cyanBold\u$whiteBold@$redBold\h$whiteBold:$greenBold\$(parse_git_branch)$whiteBold \$$white "
+    export PS1="$whiteBold\$(date +'|%F|%T|')$purpleBold in $yellowLight\w\n${debian_chroot:+($debian_chroot)}$cyanBold\u$whiteBold@$redBold\h$whiteBold:$greenBold\$(parse_git_branch)$whiteBold \$$white "
 else
-    export PS1="$whiteBold[\$(date +'|%F | %T|')] ${debian_chroot:+($debian_chroot)}\u@\h:\w \$ "
+    export PS1="$whiteBold[\$(date +'|%F|%T|')] ${debian_chroot:+($debian_chroot)}\u@\h:\w \$ "
 fi
 
 alias open='xdg-open'
