@@ -7,21 +7,24 @@
 # shellcheck disable=SC1091
 readonly DISTRO=$(. /etc/os-release && echo "$ID_LIKE")
 readonly COLOR_ERROR="\033[0;31m"
+readonly COLOR_WARNING="\033[0;33m"
 readonly COLOR_SUCCESS="\033[0;32m"
 readonly NO_COLOR="\033[0m"
 readonly TAB="    |_"
 
 check-permissions () {
+
     if [[ "$UID" -ne "$ROOT_UID" ]]; then
 
-    error "=> You must run this command as root"
+        error "=> You must run this command as root"
 
-    exit $ERROR_NOTROOT
+        exit $ERROR_NOTROOT
 
-fi
+    fi
+
 }
 
-success() {
+success () {
 
     local message="${1:-Sucess}"
 
@@ -29,7 +32,15 @@ success() {
 
 }
 
-error() {
+warning () {
+
+    local message="${1:-Warning}"
+
+    echo -e "${COLOR_WARNING}$message${NO_COLOR}"
+
+}
+
+error () {
 
     local message="${1:-Error}"
 
@@ -41,11 +52,11 @@ git-install () {
 
     local egit
 
-    echo "==> Git"
+    echo "==> Git "
 
     if [[ $(git --version) ]]; then
 
-        echo "$TAB Git already installed"
+        warning "$TAB already installed, skipping..."
 
         configure-git
 
@@ -65,9 +76,12 @@ git-install () {
 
             error "$TAB Error installing Git"
 
+            exit 1
+
         fi
 
     fi
+
 }
 
 configure-git() {
@@ -106,22 +120,23 @@ configure-git() {
 
 		error "$TAB Error cloning the settings"
 
-        0
+        exit 0
 
 	fi
 
     git-lfs
+
 }
 
 git-lfs () {
 
-    echo "==> Git LFS"
+    echo "==> Git LFS "
 
     if [[ $(which git-lfs) != "" ]]; then
 
-        echo "$TAB Already installed, skipping..."
+        warning "$TAB Already installed, skipping..."
 
-        exit 0
+        return
 
     fi
 
@@ -155,13 +170,13 @@ configure-profile() {
 
 	if [[ -f $filebash ]]; then
 
-		printf "$TAB Inserting profile in .bashrc "
+		echo "$TAB Inserting profile in .bashrc "
 
 		isconfig=$(grep -c "$fileconfig" "$filebash")
 
 		if [[ $isconfig -eq 1 ]]; then
 
-			echo -e "\n    ${COLOR_ERROR}|_ Profile already defined.${NO_COLOR}"
+			warning "$TAB Profile already defined."
 
 		else
 
@@ -173,26 +188,32 @@ configure-profile() {
 
 	else
 
-		echo -e "\n$TAB ${COLOR_ERROR}.bashrc file not found${NO_COLOR}"
+		error "$TAB.bashrc file not found"
 
 	fi
+
 }
 
 vscode () {
 
+    echo "==> VSCode "
+
     if [[ $(which code) != "" ]]; then
 
-        echo "$TAB Already installed, skipping..."
+        warning "$TAB Already installed, skipping..."
 
-        exit 0
+        return
 
     fi
+
+    echo
 
     download_vscode
 
     install-vscode
 
-    vscode-extensions
+    #vscode-extensions
+
 }
 
 download-vscode () {
@@ -215,6 +236,8 @@ download-vscode () {
     else
 
         error "$SUB Error downloading VSCode"
+
+        exit 1
 
     fi
 
@@ -250,6 +273,8 @@ install-vscode () {
 
         error "$TAB Error installing VSCode"
 
+        exit 1
+
     fi
 
 }
@@ -258,6 +283,8 @@ vscode-extensions () {
 
     local GIST_URL="https://gist.github.com/47904ee4f36b70c9d84a30d29d996aed.git"
     local GIST_DIR="/tmp/gist"
+
+    echo "$TAB VSCode Extensions"
 
     echo "$TAB Getting VSCode extensions ids"
 
@@ -283,7 +310,7 @@ vscode-extensions () {
 
         else
 
-            exit 0
+            return
 
         fi
 
@@ -303,23 +330,23 @@ utilities () {
 
     local UTILITIES=(
         "vlc"
-        "transmission"
+        "transmission-gtk"
         "xclip"
         "openvpn"
         "tree"
     )
 
-    for ext in "${EXTENSIONS[@]}"; do
+    for ext in "${UTILITIES[@]}"; do
 
-        print "$TAB $ext: "
+        echo "$TAB $ext "
 
         if [[ $(which $ext) != "" ]]; then
 
-            echo "already installed, skipping..."
+            warning "$TAB Already installed, skipping..."
 
         else
 
-            echo "Installing $ext"
+            echo "$TAB Installing $ext"
 
             apt-get install -qq $ext
 
@@ -333,13 +360,13 @@ utilities () {
 
 yarn () {
 
-    echo "==> Yarn"
+    echo "==> Yarn "
 
     if [[ $(which yarn) != "" ]]; then
 
-        echo "$TAB Already installed, skipping..."
+        warning "$TAB Already installed, skipping..."
 
-        exit 0
+        return
 
     fi
 
@@ -367,45 +394,67 @@ yarn () {
 
         error "$TAB Error during the installation"
 
+        exit 1
+
     fi
 
 }
 
 asdf () {
 
-    echo "==> asdf"
+    local asdfCat
+
+    echo "==> asdf "
 
     if [[ $(which asdf != "") ]]; then
 
-        echo "$TAB Already installed, skipping..."
+        warning "Already installed, skipping..."
+
+        return
 
     fi
 
-    echo "$TAB Cloning the asdf repository"
+    if [[ ! -d "$HOME/.asdf" ]]; then
 
-    git clone https://github.com/asdf-vm/asdf.git ~/.asdf
+        echo "$TAB Cloning the asdf repository"
 
-    if [[ -f "~/.asdf" ]]; then
+        git clone https://github.com/asdf-vm/asdf.git ~/.asdf
 
-        echo "$TAB checking out to the last branch"
+        if [[ -d "~/.asdf" ]]; then
 
-        cd $HOME/.asdf
+            success "$TAB Successfully cloned"
 
-        git checkout "$(git describe --abbrev=0 --tags)"
+        else
+
+            error "$TAB Error while cloning"
+
+            exit 1
+
+        fi
+
+    fi
+
+    echo "$TAB checking out to the last branch"
+
+    cd $HOME/.asdf
+
+    git checkout "$(git describe --abbrev=0 --tags)"
+
+    cat=$(cat $HOME/.bashrc | grep -c ". $HOME/.asdf/asdf.sh")
+
+    if [[ "$cat" -eq 0 ]]; then
 
         echo "$TAB configuring asdf into the .bashrc"
 
         echo -e "\n. $HOME/.asdf/asdf.sh" >>$HOME/.bashrc
 
-        cd $HOME
-
     else
 
-        error "$TAB Error cloning the repository"
-
-        exit 1
+        warning "$TAB .asdf already in .bashrc file"
 
     fi
+
+    cd $HOME
 
 }
 
@@ -413,11 +462,13 @@ docker () {
 
     local VERSION="deb [arch=amd64] https://download.docker.com/linux/ubuntu    $(lsb_release -cs)    stable"
 
-    echo "==> Docker"
+    echo "==> Docker "
 
     if [[ $(which docker != "") ]]; then
 
-        echo "$TAB Already installed, skipping..."
+        warning "$TAB Already installed, skipping..."
+
+        return
 
     fi
 
@@ -438,7 +489,7 @@ docker () {
 
         error "$TAB Error during installation"
 
-        exit 0
+        exit 1
 
     fi
 
@@ -465,6 +516,8 @@ docker () {
     else
 
         error "$TAB Error during the installation"
+
+        exit 1
 
     fi
 
@@ -510,7 +563,17 @@ after-docker () {
 
 d-compose () {
 
-    echo "$TAB Cloning last version of docker compose"
+    echo "==> Docker Compose "
+
+    if [[ $(which docker-compose != "") ]]; then
+
+        warning "$TAB Already installed, skipping..."
+
+        return
+
+    fi
+
+    echo -e "\n$TAB Cloning last version of docker compose"
 
     curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
@@ -572,7 +635,7 @@ main() {
 
         utilities
 
-        echo "==>\e[30;48;5;82m You may have to reboot you PC to apply some changes\e[0m"
+        echo -e "==> \e[30;48;5;82mYou may have to reboot you PC to apply some changes\e[0m"
 
         finish
 
