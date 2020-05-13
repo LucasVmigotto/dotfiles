@@ -84,7 +84,7 @@ git-install () {
 
 }
 
-configure-git() {
+configure-git () {
 
     local clone tmpdir copy
 
@@ -158,7 +158,7 @@ git-lfs () {
 
 }
 
-configure-profile() {
+configure-profile () {
 
 	local filebash isconfig fileconfig
 
@@ -372,11 +372,11 @@ yarn () {
 
     echo "$TAB Adding the Yarn gpg key"
 
-    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 
     echo "$TAB Setting up the stable version"
 
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 
     echo "$TAB Retrive new list of packages"
 
@@ -384,7 +384,7 @@ yarn () {
 
     echo "$TAB Install Yarn"
 
-    apt-get yarn
+    apt-get install -qq yarn
 
     if [[ $(yarn --version) ]]; then
 
@@ -420,19 +420,9 @@ asdf () {
 
         git clone https://github.com/asdf-vm/asdf.git ~/.asdf
 
-        if [[ -d "~/.asdf" ]]; then
-
-            success "$TAB Successfully cloned"
-
-        else
-
-            error "$TAB Error while cloning"
-
-            exit 1
-
-        fi
-
     fi
+
+    [[ -d "~/.asdf" ]] && success "$TAB Successfully cloned"
 
     echo "$TAB checking out to the last branch"
 
@@ -495,7 +485,7 @@ docker () {
 
     echo "$TAB Adding docker gpg key"
 
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 
     echo "$TAB Setting up the stable version"
 
@@ -507,7 +497,7 @@ docker () {
 
     echo "$TAB Install docker"
 
-    apt-get install docker-ce docker-ce-cli containerd.io
+    apt-get install -y docker-ce docker-ce-cli containerd.io
 
     if [[ $(docker --version) ]]; then
 
@@ -601,19 +591,19 @@ d-compose () {
 
 }
 
-start() {
+start () {
 
     echo "=> Starting"
 
 }
 
-finish() {
+finish () {
 
     echo "=> Finished"
 
 }
 
-main() {
+main () {
 
     check-permissions
 
@@ -633,7 +623,7 @@ main() {
 
         asdf
 
-        # yarn
+        yarn
 
         utilities
 
