@@ -208,7 +208,7 @@ vscode () {
 
     echo
 
-    download_vscode
+    download-vscode
 
     install-vscode
 
@@ -627,11 +627,13 @@ main() {
 
         vscode
 
-        docker
+        # docker
+
+        d-compose
 
         asdf
 
-        yarn
+        # yarn
 
         utilities
 
