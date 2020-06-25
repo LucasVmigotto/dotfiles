@@ -1,33 +1,44 @@
-# Dotfiles
+# dotfiles
 
-Arquivos para configurar e personalizar a interface do terminal assim como mais algumas outras funcionalidades.
+## Como usar
 
-## Como fica o terminal
+1. Clone o repositório
 
-O log se divide em quatro partes:
-
-1. Data e hora atual
-2. Nome de usuário logado
-3. Nome do computador
-4. Diretório atual de trabalho
-5. Nome da branch caso haja uma pasta `.git/`
-
-```bash
-| dd/mm/yyyy | hh:MM:ss | in diretórioDeTrabalho
-nomeDoUsuário@hostname: (nome da branch) $
-```
-
-## Instalação
-
-1. Clone o repositório em sua `home/`:
     ```bash
-    git clone https://github.com/LucasVmigotto/dotfiles.git $HOME/dotfiles
+        git clone https://github.com/LucasVmigotto/dotfiles $HOME/dotfiles
     ```
-2. Entre no diretório do projeto:
+
+2. Instale [Zsh](http://www.zsh.org/)
+
     ```bash
-    cd dotfiles
+        sudo apt-get install zsh
     ```
-3. Execute o `dotfiles`:
+
+3. Defina o Zsh como o seu Shell padrão
+
     ```bash
-    ./dotfile
+        chsh -s $(which zsh)
+    ```
+
+    > Para ativar as mudanças feitas, faça Log off e Log in novamente
+
+4. Instale [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh)
+
+    ```bash
+        sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    ```
+
+5. Adicione o repositório de dois plugins
+
+    ```bash
+        git clone https://github.com/zsh-users/zsh-autosuggestions.git \
+            $ZSH_CUSTOM/plugins/zsh-autosuggestions
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
+            $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+    ```
+
+6. Execute o script para aplicar as preferências e personalizações
+
+    ```bash
+        sh ~/dotfiles/init.sh
     ```
