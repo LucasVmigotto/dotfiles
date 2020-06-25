@@ -80,19 +80,19 @@ git-profile () {
 
 }
 
-hasPreferences () {
-    return $(cat ~/.zshrc | grep -c "source ~/dotfiles/zshrc")
-}
-
 copy-profile () {
 
-    if [[ $(hasPreferences) == 0 ]]; then
+    local hasPreferences=$(cat ~/.zshrc | grep -c "source ~/dotfiles/zshrc")
+
+    if [[ $hasPreferences -eq 0 ]]; then
 
         warning "Appending preferences..."
 
         echo "source ~/dotfiles/zshrc" >> ~/.zshrc
 
-        [[ $(hasPreferences) == 1 ]] && success "Preferences successfully applied"
+        hasPreferences=$(cat ~/.zshrc | grep -c "source ~/dotfiles/zshrc")
+
+        [[ $hasPreferences -eq 1 ]] && success "Preferences successfully applied"
 
     else
 
