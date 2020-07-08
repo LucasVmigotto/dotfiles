@@ -80,6 +80,52 @@ git-profile () {
 
 }
 
+missingSymbols () {
+
+    hasFont=$(fc-list | grep -c PowerlineSymbols.otf)
+
+    [[ $hasFont -ne 1 ]] && warning "Zsh symbols already installed" && return
+
+    warning "Installing PowerlineSymbols..."
+
+    wget https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf \
+        -P /tmp
+
+    [[ -f "/tmp/PowerlineSymbols.otf" ]] && success
+
+    warning "Installing font config..."
+
+    wget https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf \
+        -P /tmp
+
+    [[ -f "/tmp/10-powerline-symbols.conf" ]] && success
+
+    [[ ! -d "~/.local/share/fonts/" ]] &&
+        warning "Directory ~/.local/share/fonts/ not found, creating..." &&
+        mkdir -p ~/.local/share/fonts/ &&
+        success
+
+    warning "Moving PowerlineSymbols.otf to ~/.local/share/fonts/"
+
+    mv /tmp/PowerlineSymbols.otf ~/.local/share/fonts/
+
+    [[ -f "~/.local/share/fonts/PowerlineSymbols.otf" ]] && success
+
+    warning "Refreshing font cache"
+
+    fc-cache -vf ~/.local/share/fonts/
+
+    [[ ! -d "~/.config/fontconfig/conf.d/" ]] &&
+        warning "Directory ~/.config/fontconfig/conf.d/ not found, creating..." &&
+        mkdir -p ~/.config/fontconfig/conf.d/ &&
+        success
+
+    warning "Moving font config file to ~/.config/fontconfig/conf.d/"
+
+    mv /tmp/10-powerline-symbols.conf ~/.config/fontconfig/conf.d/
+
+}
+
 copy-profile () {
 
     local hasPreferences=$(cat ~/.zshrc | grep -c "source ~/dotfiles/zshrc")
@@ -99,6 +145,8 @@ copy-profile () {
         warning "Profile already applied"
 
     fi
+
+    missingSymbols
 
 }
 
