@@ -2,7 +2,8 @@
 ENABLE_CORRECTION="true"
 
 # Theme
-ZSH_THEME="robbyrussell"
+#ZSH_THEME="robbyrussell"
+ZSH_THEME="agnoster"
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=10"
 
 # Plugins
@@ -29,3 +30,5 @@ pastefinish() {
 
 zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
+
+[[ $ZSH_THEME -eq "agnoster" ]] && DEFAULT_USER=$USER
