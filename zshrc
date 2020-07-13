@@ -2,8 +2,8 @@
 ENABLE_CORRECTION="true"
 
 # Theme
-#ZSH_THEME="robbyrussell"
-ZSH_THEME="agnoster"
+ZSH_THEME="robbyrussell"
+#ZSH_THEME="agnoster"
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=10"
 
 # Plugins
