@@ -84,7 +84,7 @@ missingSymbols () {
 
     hasFont=$(fc-list | grep -c PowerlineSymbols.otf)
 
-    [[ $hasFont -ne 1 ]] && warning "Zsh symbols already installed" && return
+    [[ $hasFont -eq 1 ]] && warning "Zsh symbols already installed" && return
 
     warning "Installing PowerlineSymbols..."
 
