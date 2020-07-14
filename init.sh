@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 readonly COLOR_ERROR="\033[0;31m"
 readonly COLOR_WARNING="\033[0;33m"
 readonly COLOR_SUCCESS="\033[0;32m"
@@ -113,7 +115,7 @@ missingSymbols () {
 
     warning "Refreshing font cache"
 
-    fc-cache -vf ~/.local/share/fonts/
+    fc-cache -f ~/.local/share/fonts/
 
     [[ ! -d "~/.config/fontconfig/conf.d/" ]] &&
         warning "Directory ~/.config/fontconfig/conf.d/ not found, creating..." &&
