@@ -40,5 +40,5 @@
 6. Execute o script para aplicar as preferências e personalizações
 
     ```bash
-        sh ~/dotfiles/init.sh
+        bash ~/dotfiles/init.sh
     ```

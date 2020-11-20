@@ -80,6 +80,8 @@ git-profile () {
 
     fi
 
+    echo
+
 }
 
 missingSymbols () {
@@ -126,6 +128,8 @@ missingSymbols () {
 
     mv /tmp/10-powerline-symbols.conf ~/.config/fontconfig/conf.d/
 
+    echo
+
 }
 
 copy-profile () {
@@ -150,6 +154,76 @@ copy-profile () {
 
     missingSymbols
 
+    echo
+
+}
+
+roboto-fonts () {
+
+    local hasAnyRobotoFonts=$(fc-list | grep -c Roboto)
+
+    if [[ $hasAnyRobotoFonts -eq 0 ]]; then
+
+        local FILE_ROBOTO_REGULAR="/tmp/roboto-regular.zip"
+        local DIR_ROBOTO_REGULAR="/tmp/roboto-regular"
+        local URL_ROBOTO_REGULAR="https://fonts.google.com/download?family=Roboto"
+        local FILE_ROBOTO_MONO="/tmp/roboto-mono.zip"
+        local DIR_ROBOTO_MONO="/tmp/roboto-mono"
+        local URL_ROBOTO_MONO="https://fonts.google.com/download?family=Roboto%20Mono"
+
+        warning "Dowloading Roboto fonts..."
+
+        curl $URL_ROBOTO_REGULAR -sSo $FILE_ROBOTO_REGULAR
+
+        [[ -f "$FILE_ROBOTO_REGULAR" ]] &&
+            success "Roboto regular successfully installed in $FILE_ROBOTO_REGULAR"
+
+        curl $URL_ROBOTO_MONO -sSo $FILE_ROBOTO_MONO
+
+        [[ -f "$FILE_ROBOTO_MONO" ]] &&
+            success "Roboto mono successfully installed in $FILE_ROBOTO_MONO"
+
+        warning "Unziping downloaded fonts..."
+
+        unzip "$FILE_ROBOTO_REGULAR" -d "$DIR_ROBOTO_REGULAR"
+
+        unzip "$FILE_ROBOTO_REGULAR" -d "$DIR_ROBOTO_REGULAR"
+
+        [[ -d "$DIR_ROBOTO_REGULAR" ]] &&
+            [[ -d "$DIR_ROBOTO_MONO" ]] &&
+            success "Files successfully extracted"
+
+        warning "Moving fonts files to ~/.local/share/fonts/"
+
+        mv "$DIR_ROBOTO_REGULAR/*.ttf" "~/.local/share/fonts/"
+
+        mv "$DIR_ROBOTO_MONO/*.ttf" "~/.local/share/fonts/"
+
+        local robotoRegularMoved=$(ls -la ~/.local/share/fonts | grep -c Roboto-)
+        local robotoMonoMoved=$(ls -la ~/.local/share/fonts | grep -c RobotoMono)
+
+        [[ $robotoRegularMoved -ne 0 ]] &&
+            [[ $robotoMonoMoved -ne 0 ]] &&
+            success "Roboto fonts successfully moved"
+
+        warning "Refreshing fonts..."
+
+        fc-cache -f ~/.local/share/fonts/
+
+        local robotoRegularApplied=$(fc-list | grep -c Roboto-)
+        local robotoMonoApplied=$(fc-list | grep -c RobotoMono)
+
+        [[ $robotoRegularApplied -ne 0 ]] &&
+            [[ $robotoMonoApplied -ne 0 ]] &&
+            success "Roboto fonts successfully applied"
+
+    else
+
+        warning "Roboto fonts already installed, skipping..."
+
+    fi
+
+    echo
 }
 
 main () {
@@ -159,6 +233,8 @@ main () {
     git-profile
 
     copy-profile
+
+    roboto-fonts
 
     echo "Done!"
 
