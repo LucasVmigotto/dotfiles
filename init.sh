@@ -30,53 +30,20 @@ error () {
 
 git-profile () {
 
-    warning "Cloning gist..."
+    warning "Writing Git profile file"
 
-    local clone=$(git clone -q https://gist.github.com/6e11b99a007e660656e147e88fde4bc0 /tmp/gists)
+    if [[ ! -f ~/.gitconfig ]]; then
 
-    if [[ $clone -eq 0 ]]; then
+        local URL_GIT_PROFILE="https://gist.githubusercontent.com/LucasVmigotto/6e11b99a007e660656e147e88fde4bc0/raw/c02f384a831e5d708f0cbe5f4fdfb580f0410a1c/git-config"
 
-        success "Gist successfully cloned"
+        curl -sS $URL_GIT_PROFILE > ~/.gitconfig
 
-        if [[ -e "~/.gitconfig" ]]; then
-
-            warning "File .git-config already exists"
-
-            warning "Replacing content..."
-
-            mv /tmp/gists/git-config ~/.gitconfig
-
-            success
-
-        else
-
-            warning "File .gitconfig doesn't exists"
-
-            warning "Creating file..."
-
-            cat /tmp/gists/git-config > ~/.gitconfig
-
-            success
-
-        fi
+        [[ -f ~/.gitconfig ]] &&
+            success "Profile successfully copied"
 
     else
 
-        error
-
-    fi
-
-    warning "Removing /tmp/gists"
-
-    rm -rf "/tmp/gists"
-
-    if [[ ! -d "/tmp/gists" ]]; then
-
-        success "Files successfully removed"
-
-    else
-
-        error
+        warning "Git config profile already exists, skipping..."
 
     fi
 
@@ -84,7 +51,10 @@ git-profile () {
 
 }
 
-missingSymbols () {
+missing-symbols () {
+
+    local URL_POWER_SYMBOLS="https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf"
+    local URL_POWER_SYMBOLS_CONF="https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf"
 
     hasFont=$(fc-list | grep -c PowerlineSymbols.otf)
 
@@ -92,15 +62,13 @@ missingSymbols () {
 
     warning "Installing PowerlineSymbols..."
 
-    wget https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf \
-        -P /tmp
+    curl $URL_POWER_SYMBOLS -sSo /tmp/PowerlineSymbols.otf
 
     [[ -f "/tmp/PowerlineSymbols.otf" ]] && success
 
     warning "Installing font config..."
 
-    wget https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf \
-        -P /tmp
+    curl $URL_POWER_SYMBOLS_CONF -sSo /tmp/10-powerline-symbols.conf
 
     [[ -f "/tmp/10-powerline-symbols.conf" ]] && success
 
@@ -152,7 +120,7 @@ copy-profile () {
 
     fi
 
-    missingSymbols
+    missing-symbols
 
     echo
 
@@ -164,40 +132,39 @@ roboto-fonts () {
 
     if [[ $hasAnyRobotoFonts -eq 0 ]]; then
 
-        local FILE_ROBOTO_REGULAR="/tmp/roboto-regular.zip"
-        local DIR_ROBOTO_REGULAR="/tmp/roboto-regular"
         local URL_ROBOTO_REGULAR="https://fonts.google.com/download?family=Roboto"
-        local FILE_ROBOTO_MONO="/tmp/roboto-mono.zip"
-        local DIR_ROBOTO_MONO="/tmp/roboto-mono"
         local URL_ROBOTO_MONO="https://fonts.google.com/download?family=Roboto%20Mono"
 
         warning "Dowloading Roboto fonts..."
 
-        curl $URL_ROBOTO_REGULAR -sSo $FILE_ROBOTO_REGULAR
+        curl $URL_ROBOTO_REGULAR -sSo /tmp/roboto_regular.zip
 
-        [[ -f "$FILE_ROBOTO_REGULAR" ]] &&
-            success "Roboto regular successfully installed in $FILE_ROBOTO_REGULAR"
+        [[ -f "/tmp/roboto_regular.zip" ]] &&
+            success "Roboto regular successfully installed in /tmp/roboto_regular.zip"
 
-        curl $URL_ROBOTO_MONO -sSo $FILE_ROBOTO_MONO
+        curl $URL_ROBOTO_MONO -sSo /tmp/roboto_mono.zip
 
-        [[ -f "$FILE_ROBOTO_MONO" ]] &&
-            success "Roboto mono successfully installed in $FILE_ROBOTO_MONO"
+        [[ -f "/tmp/roboto_mono.zip" ]] &&
+            success "Roboto mono successfully installed in /tmp/roboto_mono.zip"
 
         warning "Unziping downloaded fonts..."
 
-        unzip "$FILE_ROBOTO_REGULAR" -d "$DIR_ROBOTO_REGULAR"
+        unzip -q /tmp/roboto_regular.zip -d /tmp/roboto_regular
 
-        unzip "$FILE_ROBOTO_REGULAR" -d "$DIR_ROBOTO_REGULAR"
+        unzip -q /tmp/roboto_mono.zip -d /tmp/roboto_mono
 
-        [[ -d "$DIR_ROBOTO_REGULAR" ]] &&
-            [[ -d "$DIR_ROBOTO_MONO" ]] &&
+        [[ -d "/tmp/roboto_regular" ]] &&
+            [[ -d "/tmp/roboto_mono" ]] &&
             success "Files successfully extracted"
 
         warning "Moving fonts files to ~/.local/share/fonts/"
 
-        mv "$DIR_ROBOTO_REGULAR/*.ttf" "~/.local/share/fonts/"
+        mkdir -p ~/.local/share/fonts/
 
-        mv "$DIR_ROBOTO_MONO/*.ttf" "~/.local/share/fonts/"
+        mv /tmp/roboto_regular/*.ttf ~/.local/share/fonts/
+
+        mv /tmp/roboto_mono/**/*.ttf ~/.local/share/fonts/
+        mv /tmp/roboto_mono/*.ttf ~/.local/share/fonts/
 
         local robotoRegularMoved=$(ls -la ~/.local/share/fonts | grep -c Roboto-)
         local robotoMonoMoved=$(ls -la ~/.local/share/fonts | grep -c RobotoMono)
@@ -216,6 +183,25 @@ roboto-fonts () {
         [[ $robotoRegularApplied -ne 0 ]] &&
             [[ $robotoMonoApplied -ne 0 ]] &&
             success "Roboto fonts successfully applied"
+
+        warning "Removing /tmp/roboto_regular /tmp/roboto_mono and .zip files"
+
+        rm -rf "/tmp/roboto_regular" \
+            "/tmp/roboto_regular.zip" \
+            "/tmp/roboto_mono" \
+            "/tmp/roboto_mono.zip"
+
+        local countRobotoFonts=$(ls -a /tmp | grep -c roboto)
+
+        if [[ $countRobotoFonts -eq 0 ]]; then
+
+            success "Files successfully removed"
+
+        else
+
+            error
+
+        fi
 
     else
 
