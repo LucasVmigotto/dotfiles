@@ -8,7 +8,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=10"
 
 # Plugins
 plugins=(
-    asdf
+    sudo
     cp
     docker-compose
     docker
