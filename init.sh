@@ -32,7 +32,7 @@ git-profile () {
 
     warning "Cloning git config gist..."
 
-    local clone=$(git clone -q https://gist.github.com/6e11b99a007e660656e147e88fde4bc0 /tmp/gists)
+    local clone=$(git clone -q https://gist.github.com/6e11b99a007e660656e147e88fde4bc0 /tmp/gists/git-config)
 
     if [[ $clone -eq 0 ]]; then
 
@@ -66,11 +66,11 @@ git-profile () {
 
     fi
 
-    warning "Removing /tmp/gists"
+    warning "Removing /tmp/gists/git-config"
 
-    rm -rf "/tmp/gists"
+    rm -rf "/tmp/gists/git-config"
 
-    if [[ ! -d "/tmp/gists" ]]; then
+    if [[ ! -d "/tmp/gists/git-config" ]]; then
 
         success "Files successfully removed"
 
@@ -245,6 +245,46 @@ roboto-fonts () {
     echo
 }
 
+terminal-profile () {
+
+    warning "Cloning terminal profile gist..."
+
+    local clone=$(git clone -q https://gist.github.com/828f21060561ac67fa6d526f02c027f4.git /tmp/gists/terminal_profile.dconf)
+
+    if [[ $clone -eq 0 ]]; then
+
+        success "Gist successfully cloned"
+
+        warning "Copying terminal profile"
+
+        dconf load /org/gnome/terminal/legacy/profiles:/ < /tmp/gists/terminal_profile.dconf
+
+        success
+
+    else
+
+        error
+
+    fi
+
+    warning "Removing /tmp/gists/terminal_profile.dconf"
+
+    rm -rf "/tmp/gists/terminal_profile.dconf"
+
+    if [[ ! -d "/tmp/gists/terminal_profile.dconf" ]]; then
+
+        success "Files successfully removed"
+
+    else
+
+        error
+
+    fi
+
+    echo
+
+}
+
 main () {
 
     echo "Starting..."
@@ -254,6 +294,8 @@ main () {
     copy-profile
 
     roboto-fonts
+
+    terminal-profile
 
     echo "Done!"
 
