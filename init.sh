@@ -30,20 +30,53 @@ error () {
 
 git-profile () {
 
-    warning "Writing Git profile file"
+    warning "Cloning git config gist..."
 
-    if [[ ! -f ~/.gitconfig ]]; then
+    local clone=$(git clone -q https://gist.github.com/6e11b99a007e660656e147e88fde4bc0 /tmp/gists)
 
-        local URL_GIT_PROFILE="https://gist.githubusercontent.com/LucasVmigotto/6e11b99a007e660656e147e88fde4bc0/raw/c02f384a831e5d708f0cbe5f4fdfb580f0410a1c/git-config"
+    if [[ $clone -eq 0 ]]; then
 
-        curl -sS $URL_GIT_PROFILE > ~/.gitconfig
+        success "Gist successfully cloned"
 
-        [[ -f ~/.gitconfig ]] &&
-            success "Profile successfully copied"
+        if [[ -e "~/.gitconfig" ]]; then
+
+            warning "File .git-config already exists"
+
+            warning "Replacing content..."
+
+            mv /tmp/gists/git-config ~/.gitconfig
+
+            success
+
+        else
+
+            warning "File .gitconfig doesn't exists"
+
+            warning "Creating file..."
+
+            cat /tmp/gists/git-config > ~/.gitconfig
+
+            success
+
+        fi
 
     else
 
-        warning "Git config profile already exists, skipping..."
+        error
+
+    fi
+
+    warning "Removing /tmp/gists"
+
+    rm -rf "/tmp/gists"
+
+    if [[ ! -d "/tmp/gists" ]]; then
+
+        success "Files successfully removed"
+
+    else
+
+        error
 
     fi
 
