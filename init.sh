@@ -285,6 +285,46 @@ terminal-profile () {
 
 }
 
+ssh-config () {
+
+    warning "Cloning SSH Config gist..."
+
+    local clone=$(git clone -q https://gist.github.com/fd6c7eae2e2476390b44d4e83fc50e64.git /tmp/gists/ssh-config)
+
+    if [[ $clone -eq 0 ]]; then
+
+        success "Gist successfully cloned"
+
+        warning "Copying terminal profile"
+
+        cat /tmp/gists/ssh-config >> $HOME/.ssh/config
+
+        success
+
+    else
+
+        error
+
+    fi
+
+    warning "Removing /tmp/gists/ssh-config"
+
+    rm -rf "/tmp/gists/ssh-config"
+
+    if [[ ! -d "/tmp/gists/ssh-config" ]]; then
+
+        success "Files successfully removed"
+
+    else
+
+        error
+
+    fi
+
+    echo
+
+}
+
 main () {
 
     echo "Starting..."
@@ -296,6 +336,8 @@ main () {
     roboto-fonts
 
     terminal-profile
+
+    ssh-config
 
     echo "Done!"
 
