@@ -95,13 +95,13 @@ missing-symbols () {
 
     warning "Installing PowerlineSymbols..."
 
-    curl $URL_POWER_SYMBOLS -sSo /tmp/PowerlineSymbols.otf
+    curl $URL_POWER_SYMBOLS -sSLo /tmp/PowerlineSymbols.otf
 
     [[ -f "/tmp/PowerlineSymbols.otf" ]] && success
 
     warning "Installing font config..."
 
-    curl $URL_POWER_SYMBOLS_CONF -sSo /tmp/10-powerline-symbols.conf
+    curl $URL_POWER_SYMBOLS_CONF -sSL > /tmp/10-powerline-symbols.conf
 
     [[ -f "/tmp/10-powerline-symbols.conf" ]] && success
 
