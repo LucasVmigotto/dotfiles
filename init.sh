@@ -249,7 +249,7 @@ terminal-profile () {
 
     warning "Cloning terminal profile gist..."
 
-    local clone=$(git clone -q https://gist.github.com/828f21060561ac67fa6d526f02c027f4.git /tmp/gists/terminal_profile.dconf)
+    local clone=$(git clone -q https://gist.github.com/828f21060561ac67fa6d526f02c027f4.git /tmp/gists/terminal_profile)
 
     if [[ $clone -eq 0 ]]; then
 
@@ -257,7 +257,7 @@ terminal-profile () {
 
         warning "Copying terminal profile"
 
-        dconf load /org/gnome/terminal/legacy/profiles:/ < /tmp/gists/terminal_profile.dconf
+        cat /tmp/gists/terminal_profile/terminal_profile.dconf | dconf load /org/gnome/terminal/legacy/profiles:/
 
         success
 
@@ -267,11 +267,11 @@ terminal-profile () {
 
     fi
 
-    warning "Removing /tmp/gists/terminal_profile.dconf"
+    warning "Removing /tmp/gists/terminal_profile"
 
-    rm -rf "/tmp/gists/terminal_profile.dconf"
+    rm -rf "/tmp/gists/terminal_profile"
 
-    if [[ ! -d "/tmp/gists/terminal_profile.dconf" ]]; then
+    if [[ ! -d "/tmp/gists/terminal_profile" ]]; then
 
         success "Files successfully removed"
 
@@ -297,7 +297,7 @@ ssh-config () {
 
         warning "Copying terminal profile"
 
-        cat /tmp/gists/ssh-config >> $HOME/.ssh/config
+        cat /tmp/gists/ssh-config/config >> $HOME/.ssh/config
 
         success
 
