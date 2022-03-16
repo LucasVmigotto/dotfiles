@@ -21,6 +21,8 @@ vim-plug-install () {
 
     fi
 
+    echo
+
 }
 
 vim-profile () {
@@ -44,7 +46,6 @@ vim-profile () {
             [[ $updated -eq 0 ]] &&
                 success-me 'Vim config file successfully updated' ||
                 error-me 'Vim config file could not be updated'
-
 
         else
 

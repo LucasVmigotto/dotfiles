@@ -3,10 +3,10 @@ roboto-regular () {
     local has_roboto_regular=$(fc-list | grep -c 'Roboto')
 
     [[ $has_roboto_regular -gt 0 ]] &&
-        warning-me 'Roboto Regular fonts already installed, skipping...' &&
+        warning-me 'RobotoRegular fonts already installed, skipping...' &&
         return 0
 
-    info-me 'Roboto Regular fonts is not installed'
+    info-me 'RobotoRegular fonts is not installed'
 
     local URL_ROBOTO_REGULAR='https://fonts.google.com/download?family=Roboto'
 
@@ -15,16 +15,16 @@ roboto-regular () {
     curl -sSo /tmp/roboto_regular.zip $URL_ROBOTO_REGULAR
 
     [[ -e '/tmp/roboto_regular.zip' ]] &&
-        success-me 'Roboto Regular successfully downloaded' ||
-        error-me 'Roboto Regular fonts could not be downloaded' && exit 1
+        success-me 'RobotoRegular successfully downloaded' ||
+        error-me 'RobotoRegular fonts could not be downloaded' && exit 1
 
     info-me 'Extracting font file'
 
     unzip -q /tmp/roboto_regular.zip -d /tmp/roboto_regular
 
     [[ -d '/tmp/roboto_regular' ]] &&
-        success-me 'Roboto Regular successfully extracted' ||
-        error-me 'Roboto Regular fonts could not be extracted' && exit 1
+        success-me 'RobotoRegular successfully extracted' ||
+        error-me 'RobotoRegular fonts could not be extracted' && exit 1
 
     info-me 'Coping font to system fonts folder'
 
@@ -40,9 +40,9 @@ roboto-regular () {
 
     fc-cache -f $HOME/.local/share/fonts
 
-    info-me 'Removing Roboto Regular .zip and folder from /tmp'
+    info-me 'Removing RobotoRegular .zip and folder from /tmp'
 
-    rm /tmp/roboto_regular.zip
+    rm -f /tmp/roboto_regular.zip
 
     [[ ! -e '/tmp/roboto_regular.zip' ]] &&
         success-me 'Font zip successfully removed' ||
@@ -102,7 +102,7 @@ roboto-mono () {
 
     info-me 'Removing RobotoMono .zip and folder from /tmp'
 
-    rm /tmp/roboto_mono.zip
+    rm -f /tmp/roboto_mono.zip
 
     [[ ! -e '/tmp/roboto_mono.zip' ]] &&
         success-me 'Font zip successfully removed' ||

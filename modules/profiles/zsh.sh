@@ -26,12 +26,11 @@ omzsh-install () {
 
         info-me 'Removing oh-my-zsh install script from /tmp'
 
-        rm /tmp/omzsh.sh
+        rm -f /tmp/omzsh.sh
 
         [[ ! -e '/tmp/omzsh.sh' ]] &&
             success-me 'oh-my-zsh install script successfully removed' ||
             error-me 'oh-my-zsh install script could not be removed'
-
 
     else
 
@@ -39,9 +38,13 @@ omzsh-install () {
 
     fi
 
+    echo
+
 }
 
 omzhs-plugins () {
+
+    info-me "Installing ZSH Plugins"
 
     local ZSH_PLUGIN_FOLDER="$ZSH_CUSTOM/plugins"
 
@@ -76,6 +79,8 @@ omzhs-plugins () {
 
     done
 
+    echo
+
 }
 
 zsh-profile () {
@@ -99,7 +104,6 @@ zsh-profile () {
             [[ $updated -eq 0 ]] &&
                 success-me 'ZSH config file successfully updated' ||
                 error-me 'ZSH config file could not be updated'
-
 
         else
 

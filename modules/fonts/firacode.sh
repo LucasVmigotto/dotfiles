@@ -6,6 +6,8 @@ furacode-mono () {
         warning-me 'FuraCode fonts already installed, skipping...' &&
         return 0
 
+    info-me 'FuraCode font is not installed'
+
     local URL_FURACODE_MONO='https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraMono/Regular/complete/Fura%20Mono%20Regular%20Nerd%20Font%20Complete%20Mono.otf'
 
     info-me 'Downloading FuraCode fonts'
@@ -32,7 +34,7 @@ furacode-mono () {
 
     info-me 'Removing FuraCode font file from /tmp'
 
-    rm /tmp/furacode.otf
+    rm -f /tmp/furacode.otf
 
     [[ ! -d '/tmp/furacode.otf' ]] &&
         success-me 'Font file successfully removed' ||
@@ -49,6 +51,8 @@ firacode-regular () {
     [[ $has_firacode_mono -gt 0 ]] &&
         warning-me 'FiraCode fonts already installed, skipping...' &&
         return 0
+
+    info-me 'FiraCode font is not installed'
 
     local URL_FIRACODE_REGULAR='https://github.com/tonsky/FiraCode/releases/download/6.2/Fira_Code_v6.2.zip'
 
@@ -84,7 +88,7 @@ firacode-regular () {
 
     info-me 'Removing FiraCode .zip and folder from /tmp'
 
-    rm /tmp/firacode.zip
+    rm -f /tmp/firacode.zip
 
     [[ ! -e '/tmp/firacode.zip' ]] &&
         success-me 'Font zip successfully removed' ||

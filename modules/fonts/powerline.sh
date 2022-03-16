@@ -6,6 +6,8 @@ powerline-font () {
         warning-me 'PowerlineSymbols font installed, skipping...' &&
         return 0
 
+    info-me 'PowerlineSymbols font is not installed'
+
     local URL_POWER_SYMBOLS_FONT='https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf'
 
     curl -sSLo /tmp/PowerlineSymbols.otf \
@@ -29,7 +31,7 @@ powerline-font () {
 
     info 'Removing PowerlineSymbols font file from /tmp'
 
-    rm /tmp/PowerlineSymbols.otf
+    rm -f /tmp/PowerlineSymbols.otf
 
     [[ ! -e '/tmp/PowerlineSymbols.otf' ]] &&
         success-me 'Font file successfully removed' ||
@@ -37,42 +39,39 @@ powerline-font () {
 
     echo
 
-
 }
 
 powerline-conf () {
 
     local URL_POWER_SYMBOLS_CONF='https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf'
 
-    if [[ ! -e "$HOME/.config/fontconfig/conf.d/10-powerline-symbols.conf" ]]; then
+    [[ -e "$HOME/.config/fontconfig/conf.d/10-powerline-symbols.conf" ]] &&
+        warning-me 'PowerlineSymbols conf file already exists, skipping...' &&
+        return 0
 
-        curl -sSL $URL_POWER_SYMBOLS_CONF > /tmp/10-powerline-symbols.conf
+    info-me 'PowerlineSymbols font conf is not installed'
 
-        [[ -e '/tmp/10-powerline-symbols.conf' ]] &&
-            success-me 'PowerlineSymbols conf file successfully downloaded' ||
-            error-me 'PowerlineSymbols conf file could not be downloaded' && return 1
+    curl -sSL $URL_POWER_SYMBOLS_CONF > /tmp/10-powerline-symbols.conf
 
-        info-me 'Coping PowerlineSymbols conf file to system font conf file'
+    [[ -e '/tmp/10-powerline-symbols.conf' ]] &&
+        success-me 'PowerlineSymbols conf file successfully downloaded' ||
+        error-me 'PowerlineSymbols conf file could not be downloaded' && return 1
 
-        cp /tmp/10-powerline-symbols.conf $HOME/.config/fontconfig/conf.d
+    info-me 'Coping PowerlineSymbols conf file to system font conf file'
 
-        [[ -e "$HOME/.config/fontconfig/conf.d/10-powerline-symbols.conf" ]] &&
-            success-me 'PowerlineSymbols conf file successfully copied' ||
-            error-me 'PowerlineSymbols conf file could not be copied'
+    cp /tmp/10-powerline-symbols.conf $HOME/.config/fontconfig/conf.d
 
-        info-me 'Removing PowerlineSymbols conf file from /tmp'
+    [[ -e "$HOME/.config/fontconfig/conf.d/10-powerline-symbols.conf" ]] &&
+        success-me 'PowerlineSymbols conf file successfully copied' ||
+        error-me 'PowerlineSymbols conf file could not be copied'
 
-        rm /tmp/10-powerline-symbols.conf
+    info-me 'Removing PowerlineSymbols conf file from /tmp'
 
-        [[ ! -e '/tmp/10-powerline-symbols.conf' ]] &&
-            success-me 'Conf file successfully removed' ||
-            error-me 'Conf file could not be removed'
+    rm -f /tmp/10-powerline-symbols.conf
 
-    else
-
-        warning-me 'PowerlineSymbols conf file already exists, skipping...'
-
-    fi
+    [[ ! -e '/tmp/10-powerline-symbols.conf' ]] &&
+        success-me 'Conf file successfully removed' ||
+        error-me 'Conf file could not be removed'
 
     echo
 
@@ -89,7 +88,6 @@ powerline () {
         warning-me 'Font config folder does not exists, creating...' &&
         mkdir -p $HOME/.config/fontconfig/conf.d &&
         success-me 'Font config folder successfully created'
-
 
     powerline-font
 

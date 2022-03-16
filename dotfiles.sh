@@ -43,6 +43,8 @@ main () {
 
     profiles
 
+    fonts
+
 }
 
 main "$@"

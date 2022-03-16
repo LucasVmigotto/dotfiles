@@ -16,7 +16,6 @@ terminal-config () {
             success-me 'Terminal profile successfully applied' ||
             error-me 'Terminal profile could not be applied'
 
-
     else
 
         error-me 'Terminal config file gist could not be cloned'

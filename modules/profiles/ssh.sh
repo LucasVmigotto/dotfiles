@@ -25,7 +25,6 @@ ssh-config () {
                 success-me 'SSH config file successfully updated' ||
                 error-me 'SSH config file could not be updated'
 
-
         else
 
             info-me 'SSH config file does not exists, creating...'

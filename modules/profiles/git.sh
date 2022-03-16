@@ -20,7 +20,6 @@ git-config () {
                 success-me 'Git config file successfully updated' ||
                 error-me 'Git config file could not be updated'
 
-
         else
 
             info-me '.gitconfig file does not exists, creating...'
