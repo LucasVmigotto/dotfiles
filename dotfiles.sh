@@ -5,6 +5,7 @@ source ./utils/notifyme.sh
 
 # Profiles
 source ./modules/profiles/git.sh
+source ./modules/profiles/editorconfig.sh
 source ./modules/profiles/ssh.sh
 source ./modules/profiles/terminal.sh
 source ./modules/profiles/vim.sh
@@ -18,6 +19,8 @@ source ./modules/fonts/roboto.sh
 profiles () {
 
     git-config
+
+    editorconfig-config
 
     ssg-config
 
