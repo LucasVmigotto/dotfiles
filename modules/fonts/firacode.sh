@@ -12,7 +12,7 @@ furacode-mono () {
 
     info-me 'Downloading FuraCode fonts'
 
-    curl -sS $URL_FURACODE_MONO > /tmp/furacode.otf
+    curl -sSLo /tmp/furacode.otf $URL_FURACODE_MONO
 
     [[ -e '/tmp/furacode.otf' ]] &&
         success-me 'FuraCode successfully downloaded' ||
