@@ -1,44 +1,37 @@
 # dotfiles
 
-## Como usar
+Personal dotfiles to customize my [Linux](https://www.linux.org/) environment
 
-1. Clone o repositório
+## Prerequisites Configuration
+
+> You have to be already installed [ZSH](https://www.zsh.org/), [cURL](https://curl.se/), [Vim](https://www.vim.org/) and [Git](https://git-scm.com/).
+
+* Define, if you already didn't do it, the [ZSH](https://www.zsh.org/) as your terminal interpreter
 
     ```bash
+    chsh -s $(which zsh)
+    ```
+
+    > You need to logout and login on your user to apply the change
+
+## Usage
+
+1. Clone the repository
+
+    * HTTPS
+
+        ```bash
         git clone https://github.com/LucasVmigotto/dotfiles $HOME/dotfiles
-    ```
+        ```
 
-2. Instale [Zsh](http://www.zsh.org/)
+    * SSH
 
-    ```bash
-        sudo apt-get install zsh
-    ```
+        ```bash
+        git clone git@github.com:LucasVmigotto/dotfiles.git $HOME/dotfiles
+        ```
 
-3. Defina o Zsh como o seu Shell padrão
-
-    ```bash
-        chsh -s $(which zsh)
-    ```
-
-    > Para ativar as mudanças feitas, faça Log off e Log in novamente
-
-4. Instale [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh)
+2. Run the main script
 
     ```bash
-        sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    ```
-
-5. Adicione o repositório de dois plugins
-
-    ```bash
-        git clone https://github.com/zsh-users/zsh-autosuggestions.git \
-            $ZSH_CUSTOM/plugins/zsh-autosuggestions
-        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
-            $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
-    ```
-
-6. Execute o script para aplicar as preferências e personalizações
-
-    ```bash
-        bash ~/dotfiles/init.sh
+    bash $HOME/dotfiles/dotfiles.sh
     ```
