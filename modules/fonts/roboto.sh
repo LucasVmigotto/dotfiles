@@ -16,7 +16,7 @@ roboto-regular () {
 
     [[ -e '/tmp/roboto_regular.zip' ]] &&
         success-me 'RobotoRegular successfully downloaded' ||
-        error-me 'RobotoRegular fonts could not be downloaded' && exit 1
+        (error-me 'RobotoRegular fonts could not be downloaded' && return 1)
 
     info-me 'Extracting font file'
 
@@ -24,7 +24,7 @@ roboto-regular () {
 
     [[ -d '/tmp/roboto_regular' ]] &&
         success-me 'RobotoRegular successfully extracted' ||
-        error-me 'RobotoRegular fonts could not be extracted' && exit 1
+        (error-me 'RobotoRegular fonts could not be extracted' && return 1)
 
     info-me 'Coping font to system fonts folder'
 
@@ -76,7 +76,7 @@ roboto-mono () {
 
     [[ -e '/tmp/roboto_mono.zip' ]] &&
         success-me 'RobotoMono successfully downloaded' ||
-        error-me 'RobotoMono fonts could not be downloaded' && exit 1
+        (error-me 'RobotoMono fonts could not be downloaded' && return 1)
 
     info-me 'Extracting font file'
 
@@ -84,7 +84,7 @@ roboto-mono () {
 
     [[ -d '/tmp/roboto_mono' ]] &&
         success-me 'RobotoMono successfully extracted' ||
-        error-me 'RobotoMono fonts could not be extracted' && exit 1
+        (error-me 'RobotoMono fonts could not be extracted' && return 1)
 
     info-me 'Coping font to system fonts folder'
 
