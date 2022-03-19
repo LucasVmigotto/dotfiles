@@ -2,41 +2,39 @@ omzsh-install () {
 
     info-me 'Checking if oh-my-zsh is installed'
 
-    if [[ ! -d "$HOME/lucas/.oh-my-zsh" ]]; then
+    [[ -d "$HOME/lucas/.oh-my-zsh" ]] &&
+        warning-me 'oh-my-zsh already installed, skipping...' &&
+        return 0
 
-        warning-me 'oh-my-zsh is not installed'
+    warning-me 'oh-my-zsh is not installed'
 
-        local URL_OH_MY_ZSH='https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh'
+    local URL_OH_MY_ZSH='https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh'
 
-        info-me 'Downloading oh-my-zsh'
+    info-me 'Downloading oh-my-zsh'
 
-        curl -sSo /tmp/omzsh.sh $URL_OH_MY_ZSH
+    curl -sSo /tmp/omzsh.sh $URL_OH_MY_ZSH
 
-        [[ -e '/tmp/omzsh.sh' ]] &&
-            success-me 'oh-my-zsh successfully installed' ||
-            error-me && exit 1
+    [[ -e '/tmp/omzsh.sh' ]] &&
+        success-me 'oh-my-zsh successfully installed' ||
+        (error-me 'oh-my-zsh could not be installed' && return 1)
 
-        info-me 'Installing oh-my-zsh'
+    info-me 'Installing oh-my-zsh'
 
-        sh /tmp/omzsh.sh 1> /dev/null
+    sh /tmp/omzsh.sh&
 
-        [[ -d "$HOME/lucas/.oh-my-zsh" ]] &&
-            success-me 'oh-my-zsh successfully installed' ||
-            error-me 'oh-my-zsh could not be installed' && exit 1
+    wait $!
 
-        info-me 'Removing oh-my-zsh install script from /tmp'
+    [[ -d "$HOME/.oh-my-zsh" ]] &&
+        success-me 'oh-my-zsh successfully installed' ||
+        (error-me 'oh-my-zsh could not be installed' && return 1)
 
-        rm -f /tmp/omzsh.sh
+    info-me 'Removing oh-my-zsh install script from /tmp'
 
-        [[ ! -e '/tmp/omzsh.sh' ]] &&
-            success-me 'oh-my-zsh install script successfully removed' ||
-            error-me 'oh-my-zsh install script could not be removed'
+    rm -f /tmp/omzsh.sh
 
-    else
-
-        info-me 'oh-my-zsh already installed, skipping...'
-
-    fi
+    [[ ! -e '/tmp/omzsh.sh' ]] &&
+        success-me 'oh-my-zsh install script successfully removed' ||
+        error-me 'oh-my-zsh install script could not be removed'
 
     echo
 
@@ -46,7 +44,7 @@ omzhs-plugins () {
 
     info-me "Installing ZSH Plugins"
 
-    local ZSH_PLUGIN_FOLDER="$ZSH_CUSTOM/plugins"
+    local ZSH_PLUGIN_FOLDER="$HOME/.oh-my-zsh/custom/plugins"
 
     local ZSH_PLUGIN_NAMES=(
         zsh-autosuggestions
@@ -60,7 +58,7 @@ omzhs-plugins () {
 
     for INDEX in "${!ZSH_PLUGIN_NAMES[@]}"; do
 
-        if [[ ! -d "$ZSH_PLUGIN_FOLDER/${ZSH_PLUGIN_NAMES[$INDEX]}"]]; then
+        if [[ ! -d "$ZSH_PLUGIN_FOLDER/${ZSH_PLUGIN_NAMES[$INDEX]}" ]]; then
 
             warning-me "Installing ${ZSH_PLUGIN_NAMES[$INDEX]} zsh plugin"
 
@@ -118,9 +116,10 @@ zsh-profile () {
             local has_custom_file_appended=$(cat $HOME/.zshrc | grep -c 'custom.zshrc')
 
             [[ $has_custom_file_appended -eq 0 ]] &&
-                warning-me 'ZSH custom file already appended to .zshrc' &&
-                echo "source ~/custom.zshrc" >> $HOME/.zshrc &&
-                success-me 'Custom ZSH file successfully appended to .zshrc'
+                warning-me 'ZSH custom file not appended to .zshrc' &&
+                echo "source $HOME/custom.zshrc" >> $HOME/.zshrc &&
+                success-me 'Custom ZSH file successfully appended to .zshrc' ||
+                warning-me 'ZSH custom file already appended to .zshrc'
 
         fi
 

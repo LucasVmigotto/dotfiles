@@ -4,22 +4,18 @@ vim-plug-install () {
 
     info-me 'Checking if vim-plug is installed'
 
-    if [[ ! -f "$HOME/.vim/autoload/plug.vim" ]]; then
+    [[ -f "$HOME/.vim/autoload/plug.vim" ]] &&
+        warning-me 'vim-plug already installed' &&
+        return  0
 
-        warning-me 'vim-plug is not installed, installing...'
+    warning-me 'vim-plug is not installed, installing...'
 
-        curl -sSfLo ~/.vim/autoload/plug.vim --create-dirs \
-            $URL_VIM_PLUG
+    curl -sSfLo $HOME/.vim/autoload/plug.vim --create-dirs \
+        $URL_VIM_PLUG
 
-        [[ -e "$HOME/.vim/autoload/plug.vim" ]] &&
-            success-me 'vim-plug successfully installed' ||
-            error-me 'vim-plug could not be installed'
-
-    else
-
-        warning-me 'vim-plug already installed'
-
-    fi
+    [[ -e "$HOME/.vim/autoload/plug.vim" ]] &&
+        success-me 'vim-plug successfully installed' ||
+        error-me 'vim-plug could not be installed'
 
     echo
 
