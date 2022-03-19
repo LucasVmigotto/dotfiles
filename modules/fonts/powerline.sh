@@ -15,7 +15,7 @@ powerline-font () {
 
     [[ -e '/tmp/PowerlineSymbols.otf' ]] &&
         success-me 'PowerlineSymbols fonts file successfully downloaded' ||
-        error-me 'PowerlineSymbols fonts file could not be installed' && return 1
+        (error-me 'PowerlineSymbols fonts file could not be installed' && return 1)
 
     info-me 'Coping PowerlineSymbols font file to system fonts folder'
 
@@ -29,7 +29,7 @@ powerline-font () {
 
     fc-cache -f $HOME/.local/share/fonts
 
-    info 'Removing PowerlineSymbols font file from /tmp'
+    info-me 'Removing PowerlineSymbols font file from /tmp'
 
     rm -f /tmp/PowerlineSymbols.otf
 
@@ -55,7 +55,7 @@ powerline-conf () {
 
     [[ -e '/tmp/10-powerline-symbols.conf' ]] &&
         success-me 'PowerlineSymbols conf file successfully downloaded' ||
-        error-me 'PowerlineSymbols conf file could not be downloaded' && return 1
+        (error-me 'PowerlineSymbols conf file could not be downloaded' && return 1)
 
     info-me 'Coping PowerlineSymbols conf file to system font conf file'
 

@@ -16,13 +16,13 @@ furacode-mono () {
 
     [[ -e '/tmp/furacode.otf' ]] &&
         success-me 'FuraCode successfully downloaded' ||
-        error-me 'FuraCode fonts could not be downloaded' && exit 1
+        (error-me 'FuraCode fonts could not be downloaded' && return 1)
 
     info-me 'Coping FuraCode font to system fonts folder'
 
     cp /tmp/furacode.otf $HOME/.local/share/fonts
 
-    local copied=$(ls -a $HOME/.local/share/fonts | grep -c 'Fura')
+    local copied=$(ls -a $HOME/.local/share/fonts | grep -c 'fura')
 
     [[ $copied -ne 0 ]] &&
         success-me 'Font successfully copied' ||
@@ -62,7 +62,7 @@ firacode-regular () {
 
     [[ -e '/tmp/firacode.zip' ]] &&
         success-me 'FiraCode successfully downloaded' ||
-        error-me 'FiraCode fonts could not be downloaded' && exit 1
+        (error-me 'FiraCode fonts could not be downloaded' && return 1)
 
     info-me 'Extracting font file'
 
@@ -70,7 +70,7 @@ firacode-regular () {
 
     [[ -d '/tmp/firacode' ]] &&
         success-me 'FiraCode successfully extracted' ||
-        error-me 'FiraCode fonts could not be extracted' && exit 1
+        (error-me 'FiraCode fonts could not be extracted' && return 1)
 
     info-me 'Coping font to system fonts folder'
 

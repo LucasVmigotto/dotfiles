@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 
 # Functions
-source ./utils/notifyme.sh
+source $HOME/dotfiles/utils/notifyme.sh
 
 # Profiles
-source ./modules/profiles/git.sh
-source ./modules/profiles/editorconfig.sh
-source ./modules/profiles/ssh.sh
-source ./modules/profiles/terminal.sh
-source ./modules/profiles/vim.sh
-source ./modules/profiles/zsh.sh
+source $HOME/dotfiles/modules/profiles/git.sh
+source $HOME/dotfiles/modules/profiles/editorconfig.sh
+source $HOME/dotfiles/modules/profiles/ssh.sh
+source $HOME/dotfiles/modules/profiles/terminal.sh
+source $HOME/dotfiles/modules/profiles/vim.sh
+source $HOME/dotfiles/modules/profiles/zsh.sh
 
 # Fonts
-source ./modules/fonts/firacode.sh
-source ./modules/fonts/powerline.sh
-source ./modules/fonts/roboto.sh
+source $HOME/dotfiles/modules/fonts/firacode.sh
+source $HOME/dotfiles/modules/fonts/powerline.sh
+source $HOME/dotfiles/modules/fonts/roboto.sh
 
 profiles () {
 
@@ -22,7 +22,7 @@ profiles () {
 
     editorconfig-config
 
-    ssg-config
+    ssh-config
 
     terminal-config
 
@@ -44,9 +44,9 @@ fonts () {
 
 main () {
 
-    profiles
-
     fonts
+
+    profiles
 
 }
 

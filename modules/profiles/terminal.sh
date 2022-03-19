@@ -10,7 +10,7 @@ terminal-config () {
 
         success-me 'Terminal config gist successfully cloned'
 
-        local profile_applied=$(cat /tmp/gists/terminal_profile/terminal_profile.dconf | dconf load /org/gnome/terminal/legacy/profiles:/)
+        local profile_applied=$(cat /tmp/gists/terminal-config/terminal_profile.dconf | dconf load /org/gnome/terminal/legacy/profiles:/)
 
         [[ $profile_applied -eq 0 ]] &&
             success-me 'Terminal profile successfully applied' ||
