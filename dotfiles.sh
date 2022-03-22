@@ -2,6 +2,7 @@
 
 # Functions
 source $HOME/dotfiles/utils/notifyme.sh
+source $HOME/dotfiles/utils/check_prerequisites.sh
 
 # Profiles
 source $HOME/dotfiles/modules/profiles/git.sh
@@ -43,6 +44,8 @@ fonts () {
 }
 
 main () {
+
+    check-prerequisites
 
     fonts
 
