@@ -7,6 +7,7 @@ check-prerequisites () {
         zsh
         vim
         git
+        gnome-tweaks
     )
 
     local missing_tools=()

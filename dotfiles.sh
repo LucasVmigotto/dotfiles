@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -eu
 
 # Functions
 source $HOME/dotfiles/utils/notifyme.sh
@@ -8,7 +9,7 @@ source $HOME/dotfiles/utils/check_prerequisites.sh
 source $HOME/dotfiles/modules/profiles/git.sh
 source $HOME/dotfiles/modules/profiles/editorconfig.sh
 source $HOME/dotfiles/modules/profiles/ssh.sh
-source $HOME/dotfiles/modules/profiles/terminal.sh
+source $HOME/dotfiles/modules/profiles/preferences.sh
 source $HOME/dotfiles/modules/profiles/vim.sh
 source $HOME/dotfiles/modules/profiles/zsh.sh
 
@@ -25,7 +26,7 @@ profiles () {
 
     ssh-config
 
-    terminal-config
+    preferences-config
 
     vim-config
 

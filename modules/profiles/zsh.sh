@@ -2,7 +2,7 @@ omzsh-install () {
 
     info-me 'Checking if oh-my-zsh is installed'
 
-    [[ -d "$HOME/lucas/.oh-my-zsh" ]] &&
+    [[ -d "$HOME/.oh-my-zsh" ]] &&
         warning-me 'oh-my-zsh already installed, skipping...' &&
         return 0
 
