@@ -1,36 +1,43 @@
-terminal-config () {
+preferences-config () {
 
-    local URL_TERMINAL_PROFILE='https://gist.github.com/LucasVmigotto/828f21060561ac67fa6d526f02c027f4'
+    local URL_PREFERENCES_PROFILE='https://gist.github.com/LucasVmigotto/828f21060561ac67fa6d526f02c027f4'
 
-    info-me 'Cloning terminal config gist'
+    info-me 'Cloning preferences config gist'
 
-    local clone=$(git clone -q $URL_TERMINAL_PROFILE /tmp/gists/terminal-config)
+    local clone=$(git clone -q $URL_PREFERENCES_PROFILE /tmp/gists/preferences-config)
 
-    if [[ $clone -eq 0 ]]; then
+    [[ $clone -eq 0 ]] &&
+        success-me 'Preferences config gist successfully cloned' ||
+        (error-me 'Preferences config gist could not be cloned' && return 1)
 
-        success-me 'Terminal config gist successfully cloned'
+    local PREFERENCES_FILES=(
+        $(ls /tmp/gists/preferences-config)
+    )
 
-        local profile_applied=$(cat /tmp/gists/terminal-config/terminal_profile.dconf | dconf load /org/gnome/terminal/legacy/profiles:/)
+    for FILE in "${PREFERENCES_FILES[@]}"; do
 
-        [[ $profile_applied -eq 0 ]] &&
-            success-me 'Terminal profile successfully applied' ||
-            error-me 'Terminal profile could not be applied'
+        local DCONF_KEY=$(head -1 /tmp/gists/preferences-config/$FILE | sed 's/^\[\(.*\)]$/\/\1\//')
 
-    else
+        info-me "Loading $DCONF_KEY from $FILE"
 
-        error-me 'Terminal config file gist could not be cloned'
+        local applied=$(dconf load / < /tmp/gists/preferences-config/$FILE )
 
-        return 1
+        [[ $applied -eq 0 ]] &&
+            success-me 'Preference successfully loaded' ||
+            (
+                error-me 'Preference could not be loaded' &&
+                warning-me "Conf $DCONF_KEY not setted"
+            )
 
-    fi
+    done
 
-    info-me 'Removing terminal config gist'
+    info-me 'Removing preferences config gist'
 
-    rm -rf /tmp/gists/terminal-config
+    rm -rf /tmp/gists/preferences-config
 
-    [[ ! -d '/tmp/gists/terminal-config' ]] &&
-        success-me 'Gist successfully removed' ||
-        error-me 'Gist could not be removed'
+    [[ ! -d '/tmp/gists/preferences-config' ]] &&
+        success-me 'Preferences config gist successfully removed' ||
+        (error-me 'Preferences config gist could not be removed' && return 1)
 
     echo
 
