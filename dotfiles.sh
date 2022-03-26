@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -eu
 
 # Functions
 source $HOME/dotfiles/utils/notifyme.sh
@@ -25,7 +26,7 @@ profiles () {
 
     ssh-config
 
-    terminal-config
+    preferences-config
 
     vim-config
 
