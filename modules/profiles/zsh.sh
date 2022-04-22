@@ -93,11 +93,11 @@ zsh-profile () {
 
         success-me 'ZSH config gist successfully cloned'
 
-        if [[ -e "$HOME/custom.zshrc" ]]; then
+        if [[ -e "$HOME/.custom.zshrc" ]]; then
 
             warning-me 'ZSH config file already exists, updating...'
 
-            local updated=$(cat /tmp/gists/zsh-config/custom.zshrc > $HOME/custom.zshrc)
+            local updated=$(cat /tmp/gists/zsh-config/custom.zshrc > $HOME/.custom.zshrc)
 
             [[ $updated -eq 0 ]] &&
                 success-me 'ZSH config file successfully updated' ||
@@ -107,17 +107,17 @@ zsh-profile () {
 
             info-me 'custom.zshrc file does not exists, creating...'
 
-            local created=$(cat /tmp/gists/zsh-config/custom.zshrc > $HOME/custom.zshrc)
+            local created=$(cat /tmp/gists/zsh-config/custom.zshrc > $HOME/.custom.zshrc)
 
             [[ $created -eq 0 ]] &&
                 success-me 'ZSH config file successfully created' ||
                 error-me 'ZSH config file could not be created'
 
-            local has_custom_file_appended=$(cat $HOME/.zshrc | grep -c 'custom.zshrc')
+            local has_custom_file_appended=$(cat $HOME/.zshrc | grep -c '.custom.zshrc')
 
             [[ $has_custom_file_appended -eq 0 ]] &&
                 warning-me 'ZSH custom file not appended to .zshrc' &&
-                echo "source $HOME/custom.zshrc" >> $HOME/.zshrc &&
+                echo "source $HOME/.custom.zshrc" >> $HOME/.zshrc &&
                 success-me 'Custom ZSH file successfully appended to .zshrc' ||
                 warning-me 'ZSH custom file already appended to .zshrc'
 
